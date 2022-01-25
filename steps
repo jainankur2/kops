@@ -1,0 +1,31 @@
+export AWS_REGION=us-east-2
+export KOPS_STATE_STORE=s3://kops-state-bucket-ankur
+export NODE_SIZE=t2.small
+export MASTER_SIZE=t2.medium
+export ZONES="us-east-2a,us-east-2b,us-east-2c"
+export MASTER_COUNT="1"
+export NODE_COUNT="1"
+export TOPOLOGY=private
+export PROVIDER=aws
+export ELB="internal"
+export LABELS="owner=ankur,Project=K8S_kops"
+export VPCID="vpc-0362921"
+export SUBNET_IDS="subnet-0ce11e36e9,subnet-09b810b92,subnet-0939e60d560"
+export UTILITY_SUBNETS="subnet-0dff9feadf,subnet-0accd0392,subnet-0700c2f5"
+export UTILITY_CIDRS="10.0.1.0/24",,"10.0.3.0/24","10.0.5.0/24"
+export NETWORK_CIDR="10.0.0.0/16"
+export SUBNET_CIDR="10.0.0.0/24","10.0.2.0/24","10.0.4.0/24"
+
+kops create cluster --cloud $PROVIDER --master-count=$MASTER_COUNT --node-count=$NODE_COUNT --dns $TOPOLOGY --zones $ZONES --api-loadbalancer-type $ELB --topology $TOPOLOGY --networking weave --network-cidr $NETWORK_CIDR --vpc ${VPCID} --node-size $NODE_SIZE --master-size $MASTER_SIZE --master-zones $MASTER_ZONES --cloud-labels "$LABELS" --authorization AlwaysAllow --subnets $SUBNET_IDS --utility-subnets $UTILITY_SUBNETS --name ${NAME} --out=test --target=terraform --yes
+
+Role Permission:
+ AmazonEC2FullAccess
+ AmazonSQSFullAccess
+ IAMFullAccess
+ AmazonS3FullAccess
+ AmazonVPCFullAccess
+ AmazonRoute53FullAccess
+ AmazonEventBridgeFullAccess
+ 
+ https://www.patricia-anong.com/blog/2018/8/kubernetes-in-aws-using-kops
+ https://kops.sigs.k8s.io/run_in_existing_vpc/
